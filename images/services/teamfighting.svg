@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">
+  <rect width="960" height="540" fill="#0c0c0f"/>
+  <rect x="36" y="36" width="888" height="468" rx="16" fill="#121218" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
+  <circle cx="380" cy="280" r="28" fill="#4f9cf9" opacity="0.35"/>
+  <circle cx="520" cy="240" r="28" fill="#f43f5e" opacity="0.35"/>
+  <circle cx="580" cy="320" r="28" fill="#4f9cf9" opacity="0.35"/>
+  <line x1="380" y1="280" x2="520" y2="240" stroke="#fff" stroke-width="2" opacity="0.25"/>
+  <line x1="520" y1="240" x2="580" y2="320" stroke="#fff" stroke-width="2" opacity="0.25"/>
+  <text x="72" y="140" fill="#fff" font-family="Segoe UI,Arial,sans-serif" font-size="52" font-weight="700">Teamfight Simulator</text>
+  <text x="72" y="195" fill="rgba(255,255,255,0.7)" font-family="Segoe UI,Arial,sans-serif" font-size="22">Spacing + targets</text>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">
+  <rect width="960" height="540" fill="#0c0c0f"/>
+  <rect x="36" y="36" width="888" height="468" rx="16" fill="#121218" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
+  <rect x="100" y="260" width="110" height="110" rx="14" fill="#1e1e26" stroke="#4f9cf9" stroke-width="2"/>
+  <rect x="230" y="260" width="110" height="110" rx="14" fill="#1e1e26" stroke="#4f9cf9" stroke-width="2"/>
+  <rect x="360" y="260" width="110" height="110" rx="14" fill="#1e1e26" stroke="#f43f5e" stroke-width="3"/>
+  <rect x="490" y="260" width="110" height="110" rx="14" fill="#1e1e26" stroke="#4f9cf9" stroke-width="2"/>
+  <text x="72" y="140" fill="#fff" font-family="Segoe UI,Arial,sans-serif" font-size="52" font-weight="700">Champion Pool Builder</text>
+  <text x="72" y="195" fill="rgba(255,255,255,0.7)" font-family="Segoe UI,Arial,sans-serif" font-size="22">Small pool, big impact</text>
+</svg>

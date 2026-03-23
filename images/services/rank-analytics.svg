@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">
+  <rect width="960" height="540" fill="#0c0c0f"/>
+  <rect x="36" y="36" width="888" height="468" rx="16" fill="#121218" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
+  <rect x="140" y="320" width="60" height="120" rx="6" fill="#4f9cf9" opacity="0.55"/>
+  <rect x="230" y="260" width="60" height="180" rx="6" fill="#4f9cf9" opacity="0.75"/>
+  <rect x="320" y="290" width="60" height="150" rx="6" fill="#f43f5e" opacity="0.65"/>
+  <rect x="410" y="220" width="60" height="220" rx="6" fill="#4f9cf9" opacity="0.9"/>
+  <rect x="500" y="280" width="60" height="160" rx="6" fill="#4f9cf9" opacity="0.5"/>
+  <text x="72" y="140" fill="#fff" font-family="Segoe UI,Arial,sans-serif" font-size="48" font-weight="700">Rank Analytics</text>
+  <text x="72" y="195" fill="rgba(255,255,255,0.7)" font-family="Segoe UI,Arial,sans-serif" font-size="22">Trends you can act on</text>
+</svg>

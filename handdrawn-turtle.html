@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<h1>Handdrawn turtle Lab 2/19/26</h1>
+	<p>By Andrew Song, Wyatt Avilla, Robbie Tambunting, and Lucas Nguyen</p>
+	<canvas id="turtle" width="200" height="100" style="border:1px solid #d3d3d3;"
+	</canvas>
+
+	<script>
+		var c = document.getElementById("turtle");
+		var ctx = c.getContext("2d");
+
+		ctx.beginPath();
+		ctx.arc(95,50,40,Math.PI,0);
+		ctx.fillStyle = "#873c05";
+		ctx.fill();
+		ctx.closePath();
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.arc(60,60,10,0,2*Math.PI);
+		ctx.fillStyle = "green";
+		ctx.fill();
+		ctx.closePath();
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.arc(130,60,10,0,2*Math.PI);
+		ctx.fillStyle = "green";
+		ctx.fill();
+		ctx.closePath();
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.arc(60,20,10,0,2*Math.PI);
+		ctx.fillStyle = "green";
+		ctx.fill();
+		ctx.closePath();
+		ctx.stroke();
+	</script>
+</body>
+</html>

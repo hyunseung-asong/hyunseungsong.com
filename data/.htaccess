@@ -1,0 +1,4 @@
+# Deny direct access to .txt files; they are read by PHP only.
+<Files "*.txt">
+    Require all denied
+</Files>

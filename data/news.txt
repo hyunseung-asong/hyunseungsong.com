@@ -1,0 +1,11 @@
+Date: 2025-02-20
+Title: RiftMind beta is live
+Body: We're excited to open beta access for real-time AI coaching. Sign up via Contacts to get early access.
+---
+Date: 2025-02-15
+Title: New Pro plan with VOD review
+Body: Pro subscribers now get AI-powered VOD review and session summaries for deeper improvement.
+---
+Date: 2025-02-01
+Title: Welcome to RiftMind
+Body: RiftMind launches: real-time AI coaching for League of Legends. Climb smarter with live feedback and in-game suggestions.

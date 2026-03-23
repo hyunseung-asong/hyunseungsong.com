@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top-Down View Turtle - Canvas</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #1a2a1a;
+      font-family: system-ui, sans-serif;
+      padding: 1.5rem;
+    }
+    .header {
+      text-align: center;
+      color: #c4d4b8;
+      margin-bottom: 1rem;
+    }
+    .header h1 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .header p {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: #9ab88a;
+    }
+    canvas {
+      display: block;
+      border-radius: 8px;
+      box-shadow: 0 12px 48px rgba(0,0,0,0.4);
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>CMPE 272 Lab 2/18/26</h1>
+    <p>Andrew Song<br>Wyatt Avilla<br>Robbie Tambunting<br>Lucas Nguyen</p>
+  </header>
+  <canvas id="canvas" width="800" height="500"></canvas>
+
+  <script>
+    (function () {
+      const canvas = document.getElementById('canvas');
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width;
+      const H = canvas.height;
+
+      // Everything is designed in a 600×400 logical space, then scaled/centered
+      const S = Math.min(W / 600, H / 400);
+      const OX = (W - 600 * S) / 2;
+      const OY = (H - 400 * S) / 2;
+      function X(n) { return OX + n * S; }
+      function Y(n) { return OY + n * S; }
+
+      const cx = X(300), cy = Y(200);        // center of shell
+      const shellRx = 145 * S, shellRy = 110 * S;
+
+      // Helper: point on shell ellipse at angle a
+      function shellPt(a) {
+        return [cx + shellRx * Math.cos(a), cy + shellRy * Math.sin(a)];
+      }
+
+      // -----------------------------------------------------------------------
+      // BACKGROUND
+      // -----------------------------------------------------------------------
+      const bg = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, W * 0.7);
+      bg.addColorStop(0, '#264026');
+      bg.addColorStop(1, '#111e11');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, W, H);
+
+      // -----------------------------------------------------------------------
+      // GROUND SHADOW (drawn first, behind everything)
+      // -----------------------------------------------------------------------
+      ctx.save();
+      ctx.globalAlpha = 0.18;
+      ctx.fillStyle = '#000';
+      ctx.beginPath();
+      ctx.ellipse(cx + 8 * S, cy + 12 * S, shellRx * 1.25, shellRy * 1.15, 0.05, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // -----------------------------------------------------------------------
+      // SKIN COLOR HELPERS
+      // -----------------------------------------------------------------------
+      function skinGrad(x1, y1, x2, y2) {
+        const g = ctx.createLinearGradient(x1, y1, x2, y2);
+        g.addColorStop(0, '#5e9650');
+        g.addColorStop(0.5, '#4d8042');
+        g.addColorStop(1, '#3d6b35');
+        return g;
+      }
+
+      // -----------------------------------------------------------------------
+      // TAIL (behind shell)
+      // -----------------------------------------------------------------------
+      ctx.save();
+      ctx.fillStyle = skinGrad(X(290), Y(310), X(300), Y(360));
+      ctx.strokeStyle = '#2d5525';
+      ctx.lineWidth = 1.5 * S;
+      ctx.beginPath();
+      ctx.moveTo(X(288), Y(305));
+      ctx.bezierCurveTo(X(282), Y(335), X(298), Y(358), X(300), Y(362));
+      ctx.bezierCurveTo(X(302), Y(358), X(318), Y(335), X(312), Y(305));
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+
+      // -----------------------------------------------------------------------
+      // FOUR LEGS with claws (drawn under the shell)
+      // Each leg: rounded paddle with 3-4 claw tips
+      // -----------------------------------------------------------------------
+      function drawLeg(baseX, baseY, tipX, tipY, width, clawAngle, isBack) {
+        const dx = tipX - baseX, dy = tipY - baseY;
+        const len = Math.hypot(dx, dy);
+        const nx = -dy / len * width * S, ny = dx / len * width * S;
+        const midX = (baseX + tipX) / 2, midY = (baseY + tipY) / 2;
+
+        const g = skinGrad(baseX, baseY, tipX, tipY);
+
+        // Main leg shape
+        ctx.save();
+        ctx.fillStyle = g;
+        ctx.strokeStyle = '#2d5525';
+        ctx.lineWidth = 1.5 * S;
+        ctx.beginPath();
+        ctx.moveTo(baseX + nx, baseY + ny);
+        ctx.quadraticCurveTo(midX + nx * 1.2, midY + ny * 1.2, tipX + nx * 0.6, tipY + ny * 0.6);
+        ctx.quadraticCurveTo(tipX, tipY + (isBack ? 8 : -8) * S, tipX - nx * 0.6, tipY - ny * 0.6);
+        ctx.quadraticCurveTo(midX - nx * 1.2, midY - ny * 1.2, baseX - nx, baseY - ny);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        // Claws at tip
+        ctx.fillStyle = '#8a7d52';
+        ctx.strokeStyle = '#5a5030';
+        ctx.lineWidth = 1 * S;
+        for (let i = -1; i <= 1; i++) {
+          const ca = clawAngle + i * 0.3;
+          const clx = tipX + Math.cos(ca) * 14 * S;
+          const cly = tipY + Math.sin(ca) * 14 * S;
+          ctx.beginPath();
+          ctx.ellipse(clx, cly, 6 * S, 3.5 * S, ca, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      // Front-left leg (upper-left, angling forward-left)
+      drawLeg(X(215), Y(120), X(165), Y(68), 16, -Math.PI * 0.65, false);
+      // Front-right leg (upper-right, angling forward-right)
+      drawLeg(X(385), Y(120), X(435), Y(68), 16, -Math.PI * 0.35, false);
+      // Back-left leg (lower-left, angling back-left)
+      drawLeg(X(215), Y(280), X(162), Y(332), 15, Math.PI * 0.65, true);
+      // Back-right leg (lower-right, angling back-right)
+      drawLeg(X(385), Y(280), X(438), Y(332), 15, Math.PI * 0.35, true);
+
+      // -----------------------------------------------------------------------
+      // NECK (extends from front of shell toward head)
+      // -----------------------------------------------------------------------
+      ctx.save();
+      ctx.fillStyle = skinGrad(X(270), Y(90), X(330), Y(40));
+      ctx.strokeStyle = '#2d5525';
+      ctx.lineWidth = 1.5 * S;
+      ctx.beginPath();
+      ctx.moveTo(X(265), Y(100));
+      ctx.bezierCurveTo(X(258), Y(68), X(268), Y(42), X(280), Y(28));
+      ctx.lineTo(X(320), Y(28));
+      ctx.bezierCurveTo(X(332), Y(42), X(342), Y(68), X(335), Y(100));
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+
+      // -----------------------------------------------------------------------
+      // HEAD (oval with eyes, nostrils, mouth slit)
+      // -----------------------------------------------------------------------
+      const headX = cx, headY = Y(22);
+
+      ctx.save();
+      const hg = ctx.createRadialGradient(headX, headY + 5 * S, 0, headX, headY, 42 * S);
+      hg.addColorStop(0, '#6da85c');
+      hg.addColorStop(0.6, '#5a9048');
+      hg.addColorStop(1, '#457838');
+      ctx.fillStyle = hg;
+      ctx.strokeStyle = '#2d5525';
+      ctx.lineWidth = 1.8 * S;
+      ctx.beginPath();
+      ctx.ellipse(headX, headY, 38 * S, 30 * S, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      // Eyes: slightly forward on head, each with iris+pupil+highlight
+      [[-18, -4], [18, -4]].forEach(([ex, ey]) => {
+        const eyeX = headX + ex * S, eyeY = headY + ey * S;
+        // Outer eye ring
+        ctx.beginPath();
+        ctx.arc(eyeX, eyeY, 10 * S, 0, Math.PI * 2);
+        ctx.fillStyle = '#2a4a20';
+        ctx.fill();
+        // Iris
+        ctx.beginPath();
+        ctx.arc(eyeX, eyeY, 7 * S, 0, Math.PI * 2);
+        ctx.fillStyle = '#1a1a1a';
+        ctx.fill();
+        // Highlight
+        ctx.beginPath();
+        ctx.arc(eyeX - 2 * S, eyeY - 3 * S, 3 * S, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255,255,255,0.85)';
+        ctx.fill();
+      });
+
+      // Nostrils near front tip
+      [[-6, -22], [6, -22]].forEach(([nx, ny]) => {
+        ctx.beginPath();
+        ctx.ellipse(headX + nx * S, headY + ny * S, 2.5 * S, 2 * S, 0, 0, Math.PI * 2);
+        ctx.fillStyle = '#2d4a22';
+        ctx.fill();
+      });
+
+      // Subtle mouth line
+      ctx.beginPath();
+      ctx.moveTo(headX - 14 * S, headY + 10 * S);
+      ctx.quadraticCurveTo(headX, headY + 15 * S, headX + 14 * S, headY + 10 * S);
+      ctx.strokeStyle = 'rgba(35,60,28,0.6)';
+      ctx.lineWidth = 1.2 * S;
+      ctx.stroke();
+      ctx.restore();
+
+      // -----------------------------------------------------------------------
+      // SHELL: Main carapace dome with radial gradient for 3D depth
+      // -----------------------------------------------------------------------
+      ctx.save();
+      const sg = ctx.createRadialGradient(
+        cx - 30 * S, cy - 30 * S, 10 * S,
+        cx, cy, shellRx * 1.1
+      );
+      sg.addColorStop(0, '#7ab568');
+      sg.addColorStop(0.25, '#6aa858');
+      sg.addColorStop(0.55, '#558d42');
+      sg.addColorStop(0.8, '#3f7232');
+      sg.addColorStop(1, '#2e5a25');
+      ctx.fillStyle = sg;
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, shellRx, shellRy, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Shell border — thick dark rim
+      ctx.strokeStyle = '#1e3a18';
+      ctx.lineWidth = 3.5 * S;
+      ctx.stroke();
+      ctx.restore();
+
+      // -----------------------------------------------------------------------
+      // SCUTE PATTERN: Anatomically inspired (vertebral + costal + marginal)
+      // Clip to shell ellipse so nothing bleeds out
+      // -----------------------------------------------------------------------
+      ctx.save();
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, shellRx - 1, shellRy - 1, 0, 0, Math.PI * 2);
+      ctx.clip();
+
+      ctx.strokeStyle = 'rgba(30, 58, 24, 0.8)';
+      ctx.lineWidth = 1.8 * S;
+
+      // Vertebral scutes: 5 hexagonal plates along the spine (vertical center)
+      const vScuteH = shellRy * 2 / 5;
+      for (let i = 0; i < 5; i++) {
+        const yTop = cy - shellRy + i * vScuteH + 2 * S;
+        const yBot = yTop + vScuteH;
+        const yMid = (yTop + yBot) / 2;
+        const hw = 28 * S;
+        ctx.beginPath();
+        ctx.moveTo(cx, yTop);
+        ctx.lineTo(cx + hw, yMid);
+        ctx.lineTo(cx, yBot);
+        ctx.lineTo(cx - hw, yMid);
+        ctx.closePath();
+        ctx.stroke();
+      }
+
+      // Costal scutes: curved plates flanking the vertebrals
+      for (let side = -1; side <= 1; side += 2) {
+        for (let i = 0; i < 4; i++) {
+          const yc = cy - shellRy * 0.6 + i * (shellRy * 1.2 / 4) + shellRy * 0.15;
+          const xInner = cx + side * 28 * S;
+          const xOuter = cx + side * shellRx * 0.88;
+          const yTop = yc - shellRy * 0.14;
+          const yBot = yc + shellRy * 0.14;
+          ctx.beginPath();
+          ctx.moveTo(xInner, yTop);
+          ctx.quadraticCurveTo(xOuter, yTop - 5 * S, xOuter, yc);
+          ctx.quadraticCurveTo(xOuter, yBot + 5 * S, xInner, yBot);
+          ctx.stroke();
+        }
+      }
+
+      // Marginal scutes: short lines around the outer rim
+      ctx.lineWidth = 1.2 * S;
+      for (let a = 0; a < Math.PI * 2; a += Math.PI / 14) {
+        const [ox, oy] = shellPt(a);
+        const [ix, iy] = [cx + (shellRx * 0.78) * Math.cos(a), cy + (shellRy * 0.78) * Math.sin(a)];
+        ctx.beginPath();
+        ctx.moveTo(ix, iy);
+        ctx.lineTo(ox, oy);
+        ctx.stroke();
+      }
+
+      // Marginal ring
+      ctx.lineWidth = 1.5 * S;
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, shellRx * 0.78, shellRy * 0.78, 0, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.restore(); // end clip
+
+      // -----------------------------------------------------------------------
+      // SHELL HIGHLIGHT: Subtle specular shine on upper-left for 3D dome feel
+      // -----------------------------------------------------------------------
+      ctx.save();
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, shellRx, shellRy, 0, 0, Math.PI * 2);
+      ctx.clip();
+      const shine = ctx.createRadialGradient(
+        cx - 50 * S, cy - 45 * S, 0,
+        cx - 30 * S, cy - 30 * S, 90 * S
+      );
+      shine.addColorStop(0, 'rgba(255,255,255,0.15)');
+      shine.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.fillStyle = shine;
+      ctx.fillRect(0, 0, W, H);
+      ctx.restore();
+
+      // -----------------------------------------------------------------------
+      // SHELL RIM SHADOW: Darkened edge at the bottom for curvature
+      // -----------------------------------------------------------------------
+      ctx.save();
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, shellRx, shellRy, 0, 0, Math.PI * 2);
+      ctx.clip();
+      const rimShade = ctx.createLinearGradient(cx, cy - shellRy, cx, cy + shellRy);
+      rimShade.addColorStop(0, 'rgba(0,0,0,0)');
+      rimShade.addColorStop(0.7, 'rgba(0,0,0,0)');
+      rimShade.addColorStop(1, 'rgba(0,0,0,0.2)');
+      ctx.fillStyle = rimShade;
+      ctx.fillRect(0, 0, W, H);
+      ctx.restore();
+    })();
+  </script>
+</body>
+</html>
