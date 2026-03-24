@@ -44,7 +44,7 @@ foreach (get_remote_user_api_urls() as $remote_url) {
 
             <section class="content-section">
                 <h1>All Companies’ Users</h1>
-                <p>Users from this site’s database appear below under <strong>Company <?php echo htmlspecialchars(COMPANY_ID); ?></strong>. Other companies are loaded over the network using cURL to each teammate’s JSON API.</p>
+                <p>Users from this site’s database appear below under <strong>Company <?php echo htmlspecialchars(COMPANY_ID); ?></strong>. Other sites are loaded with cURL: each URL may return JSON (<code>company</code> + <code>users</code>) or plain text with one name per line.</p>
 
                 <div class="secure-doc">
                     <h2>Company <?php echo htmlspecialchars(COMPANY_ID); ?> (local database)</h2>

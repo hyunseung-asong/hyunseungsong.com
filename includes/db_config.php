@@ -4,8 +4,8 @@
  * Replace placeholders with your DreamHost (or other) database values on deploy.
  */
 return [
-    'host' => 'YOUR_MYSQL_HOST',
-    'name' => 'YOUR_DATABASE_NAME',
-    'user' => 'YOUR_DATABASE_USER',
-    'pass' => 'YOUR_DATABASE_PASSWORD',
+    'host' => 'mysql.hyunseungsong.com',
+    'name' => 'riftmind',
+    'user' => 'hyunseungsong',
+    'pass' => 'pass1234',
 ];
