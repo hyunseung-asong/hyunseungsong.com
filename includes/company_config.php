@@ -16,6 +16,6 @@ function get_remote_user_api_urls() {
     return [
         'https://cmpe272.wyattavilla.dev/users.php',
         'http://cmpe272.robbietambunting.com/amplif-ai/api/users-plain.php',
-        'https://TEAMMATE_D_DOMAIN/api/company_users.php',
+        'https://uncannydev.com/api/local_users.php',
     ];
 }
