@@ -2,7 +2,7 @@
 /**
  * Combined view: local users (this company's DB) + remote companies via cURL.
  */
-$page_title = 'All Companies’ Users';
+$page_title = 'All Companies’ Users TEST';
 require_once __DIR__ . '/includes/company_config.php';
 require_once __DIR__ . '/includes/user_repository.php';
 require_once __DIR__ . '/includes/curl_fetch_json.php';
