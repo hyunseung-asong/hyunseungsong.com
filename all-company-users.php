@@ -10,6 +10,10 @@ require_once __DIR__ . '/includes/header.php';
 
 $local_users = null;
 $local_error = null;
+$format_company_label = static function (string $label): string {
+    return strtoupper(trim($label)) === 'A' ? 'RiftMind' : $label;
+};
+
 try {
     $local_users = fetch_local_users();
 } catch (Throwable $e) {
@@ -35,19 +39,21 @@ foreach (get_remote_user_api_urls() as $remote_url) {
     $users = isset($data['users']) && is_array($data['users']) ? $data['users'] : [];
     $remote_sections[] = [
         'url' => $remote_url,
-        'label' => $companyLabel,
+        'label' => $format_company_label($companyLabel),
         'users' => $users,
         'error' => null,
     ];
 }
+
+$local_company_label = $format_company_label((string) COMPANY_ID);
 ?>
 
             <section class="content-section">
                 <h1>All Companies’ Users</h1>
-                <p>SETUP AUTO DEPLOY 2. Users from this site’s database appear below under <strong>Company <?php echo htmlspecialchars(COMPANY_ID); ?></strong>. Other sites are loaded with cURL: each URL may return JSON (<code>company</code> + <code>users</code>) or plain text with one name per line.</p>
+                <p>Users from this site’s database appear below under <strong>Company <?php echo htmlspecialchars($local_company_label); ?></strong>. Other sites are loaded with cURL: each URL may return JSON (<code>company</code> + <code>users</code>) or plain text with one name per line.</p>
 
                 <div class="secure-doc">
-                    <h2>Company <?php echo htmlspecialchars(COMPANY_ID); ?> (local database)</h2>
+                    <h2>Company <?php echo htmlspecialchars($local_company_label); ?> (local database)</h2>
                     <?php if ($local_error !== null): ?>
                     <p class="login-error"><?php echo htmlspecialchars($local_error); ?></p>
                     <?php else: ?>
