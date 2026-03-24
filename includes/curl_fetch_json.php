@@ -1,19 +1,10 @@
 <?php
 /**
- * Fetch remote JSON (user list API) via PHP cURL extension.
- *
- * @return array{ok: bool, data: ?array, error: ?string}
- */
-function fetch_remote_users_json($url) {
-    return fetch_remote_users_flexible($url);
-}
-
-/**
- * Fetch remote user list: JSON `{ company, users }` (e.g. api/company_users.php) or plain text (one name per line).
+ * Fetch remote user list via cURL: JSON `{ company, users }` (e.g. api/company_users.php) or plain text (one name per line).
  *
  * @return array{ok: bool, data: ?array{company: string, users: array}, error: ?string}
  */
-function fetch_remote_users_flexible($url) {
+function fetch_remote_users($url) {
     if (!function_exists('curl_init')) {
         return [
             'ok' => false,
@@ -36,7 +27,6 @@ function fetch_remote_users_flexible($url) {
     $errno = curl_errno($ch);
     $curlErr = $errno ? curl_error($ch) : '';
     $httpCode = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
 
     if ($errno) {
         return [

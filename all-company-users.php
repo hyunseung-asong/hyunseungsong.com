@@ -18,7 +18,7 @@ try {
 
 $remote_sections = [];
 foreach (get_remote_user_api_urls() as $remote_url) {
-    $result = fetch_remote_users_json($remote_url);
+    $result = fetch_remote_users($remote_url);
     if (!$result['ok']) {
         $remote_sections[] = [
             'url' => $remote_url,
