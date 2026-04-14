@@ -7,15 +7,15 @@ if (!defined('COMPANY_ID')) {
 }
 
 /**
- * Full URLs to the other group members' api/company_users.php endpoints.
+ * Full URLs to teammates’ user lists (JSON API or plain text, one name per line).
  * Group of four: list exactly three teammates here (replace TEAMMATE_* placeholders).
  *
  * @return list<string>
  */
 function get_remote_user_api_urls() {
     return [
-        'https://TEAMMATE_B_DOMAIN/api/company_users.php',
-        'https://TEAMMATE_C_DOMAIN/api/company_users.php',
-        'https://TEAMMATE_D_DOMAIN/api/company_users.php',
+        'https://cmpe272.wyattavilla.dev/users.php',
+        'http://cmpe272.robbietambunting.com/amplif-ai/api/users-plain.php',
+        'https://uncannydev.com/api/local_users.php',
     ];
 }

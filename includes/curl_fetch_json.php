@@ -1,10 +1,10 @@
 <?php
 /**
- * Fetch remote JSON (user list API) via PHP cURL extension.
+ * Fetch remote user list via cURL: JSON `{ company, users }` (e.g. api/company_users.php) or plain text (one name per line).
  *
- * @return array{ok: bool, data: ?array, error: ?string}
+ * @return array{ok: bool, data: ?array{company: string, users: array}, error: ?string}
  */
-function fetch_remote_users_json($url) {
+function fetch_remote_users($url) {
     if (!function_exists('curl_init')) {
         return [
             'ok' => false,
@@ -19,7 +19,7 @@ function fetch_remote_users_json($url) {
         CURLOPT_FOLLOWLOCATION => true,
         CURLOPT_TIMEOUT => 10,
         CURLOPT_HTTPHEADER => [
-            'Accept: application/json',
+            'Accept: application/json, text/plain, */*',
         ],
     ]);
 
@@ -27,7 +27,6 @@ function fetch_remote_users_json($url) {
     $errno = curl_errno($ch);
     $curlErr = $errno ? curl_error($ch) : '';
     $httpCode = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
 
     if ($errno) {
         return [
@@ -45,18 +44,59 @@ function fetch_remote_users_json($url) {
         ];
     }
 
-    $decoded = json_decode($body === false ? '' : $body, true);
-    if (!is_array($decoded)) {
+    $raw = $body === false ? '' : $body;
+    $decoded = json_decode($raw, true);
+    if (json_last_error() === JSON_ERROR_NONE && is_array($decoded) && isset($decoded['users']) && is_array($decoded['users'])) {
+        $company = isset($decoded['company']) && is_string($decoded['company']) && $decoded['company'] !== ''
+            ? $decoded['company']
+            : 'Remote';
+        return [
+            'ok' => true,
+            'data' => [
+                'company' => $company,
+                'users' => $decoded['users'],
+            ],
+            'error' => null,
+        ];
+    }
+    if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
         return [
             'ok' => false,
             'data' => null,
-            'error' => 'Response was not valid JSON.',
+            'error' => 'JSON response did not include a users array.',
         ];
     }
 
+    $lines = preg_split('/\r\n|\r|\n/', $raw);
+    $users = [];
+    foreach ($lines as $line) {
+        $line = trim($line);
+        if ($line !== '') {
+            $users[] = [
+                'name' => $line,
+                'email' => '',
+                'joined' => '',
+                'plan' => '',
+            ];
+        }
+    }
+    if ($users === []) {
+        return [
+            'ok' => false,
+            'data' => null,
+            'error' => 'Response was not JSON with a users array or plain-text names.',
+        ];
+    }
+
+    $host = parse_url($url, PHP_URL_HOST);
+    $company = is_string($host) && $host !== '' ? $host : 'Remote';
+
     return [
         'ok' => true,
-        'data' => $decoded,
+        'data' => [
+            'company' => $company,
+            'users' => $users,
+        ],
         'error' => null,
     ];
 }
