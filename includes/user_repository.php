@@ -66,24 +66,46 @@ function create_user(array $user) {
 /**
  * @return array<int, array{first_name: string, last_name: string, email: string, home_address: string, home_phone: string, cell_phone: string, joined: string, plan: string}>
  */
-function search_users(string $term) {
+function find_users(string $term = '', string $sort = 'last_name', string $direction = 'asc') {
     $pdo = user_repository_pdo();
     $term = trim($term);
-    if ($term === '') {
-        return [];
+
+    $sort_columns = [
+        'first_name' => 'first_name',
+        'last_name' => 'last_name',
+        'email' => 'email',
+        'home_address' => 'home_address',
+        'home_phone' => 'home_phone',
+        'cell_phone' => 'cell_phone',
+        'joined' => 'joined',
+        'plan' => 'plan',
+    ];
+    $sort_sql = $sort_columns[$sort] ?? $sort_columns['last_name'];
+    $direction_sql = strtolower($direction) === 'desc' ? 'DESC' : 'ASC';
+
+    $sql = 'SELECT first_name, last_name, email, home_address, home_phone, cell_phone, DATE_FORMAT(joined, \'%Y-%m-%d\') AS joined, plan
+            FROM users';
+    $params = [];
+    if ($term !== '') {
+        $sql .= ' WHERE first_name LIKE :term
+               OR last_name LIKE :term
+               OR CONCAT(first_name, \' \', last_name) LIKE :term
+               OR email LIKE :term
+               OR home_address LIKE :term
+               OR home_phone LIKE :term
+               OR cell_phone LIKE :term';
+        $params[':term'] = '%' . $term . '%';
     }
-    $like = '%' . $term . '%';
-    $stmt = $pdo->prepare(
-        'SELECT first_name, last_name, email, home_address, home_phone, cell_phone, DATE_FORMAT(joined, \'%Y-%m-%d\') AS joined, plan
-         FROM users
-         WHERE first_name LIKE :term
-            OR last_name LIKE :term
-            OR CONCAT(first_name, \' \', last_name) LIKE :term
-            OR email LIKE :term
-            OR home_phone LIKE :term
-            OR cell_phone LIKE :term
-         ORDER BY last_name ASC, first_name ASC'
-    );
-    $stmt->execute([':term' => $like]);
+    $sql .= sprintf(' ORDER BY %s %s, id ASC', $sort_sql, $direction_sql);
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
     return $stmt->fetchAll();
+}
+
+/**
+ * @return array<int, array{first_name: string, last_name: string, email: string, home_address: string, home_phone: string, cell_phone: string, joined: string, plan: string}>
+ */
+function search_users(string $term) {
+    return find_users($term);
 }
