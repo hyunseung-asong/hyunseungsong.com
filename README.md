@@ -22,6 +22,9 @@ Top-level pages:
 - `news.php`: renders announcements from `data/news.txt`, with hardcoded fallback items
 - `contacts.php`: renders contacts from `data/contacts.txt`
 - `secure.php`: admin-only page showing a sample local user list
+- `users.php`: user section with links to create/search forms
+- `user-create.php`: MySQL-backed user creation form
+- `user-search.php`: MySQL-backed user search form
 - `login.php` / `logout.php`: session auth flow
 - `all-company-users.php`: local DB users plus remote teammate APIs
 
@@ -48,7 +51,7 @@ Content/assets:
 - `images/services/*.svg`: service artwork
 - `data/contacts.txt`: file-backed contact data
 - `data/news.txt`: file-backed news data
-- `sql/users.sql`: schema + sample seed rows for the MySQL `users` table
+- `sql/users.sql`: ordered schema + 20 sample seed rows for the MySQL `users` table
 
 Other files:
 
@@ -218,13 +221,17 @@ Expected remote response shape:
 
 The local company user feature expects a MySQL table named `users`.
 
-Use `sql/users.sql` to create it.
+Use `sql/users.sql` to create it. For DreamHost, create the database through the DreamHost panel first, then select that database in phpMyAdmin and run the SQL file in order.
 
 `includes/user_repository.php` expects these columns:
 
 - `id`
-- `name`
+- `first_name`
+- `last_name`
 - `email`
+- `home_address`
+- `home_phone`
+- `cell_phone`
 - `joined`
 - `plan`
 

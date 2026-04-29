@@ -113,6 +113,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 0.75rem;
     padding: 0 var(--spacing);
     z-index: 100;
 }
@@ -144,6 +145,19 @@ body {
 }
 .main-nav a:hover {
     color: var(--red);
+}
+@media (max-width: 760px) {
+    .site-header {
+        position: static;
+        height: auto;
+        min-height: var(--header-height);
+        flex-wrap: wrap;
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+    }
+    .main-content {
+        padding-top: var(--spacing);
+    }
 }
 
 /* Footer */
@@ -418,6 +432,12 @@ code {
     border-color: var(--blue);
     box-shadow: 0 0 0 2px var(--blue-glow);
 }
+.login-form small {
+    display: block;
+    margin-top: 0.3rem;
+    color: var(--red);
+    font-size: 0.8rem;
+}
 .login-form .btn {
     margin-top: 0.5rem;
     cursor: pointer;
@@ -427,6 +447,68 @@ code {
     color: var(--red) !important;
     margin-bottom: 1rem;
     font-weight: 500;
+}
+.form-success {
+    color: #7dd3fc !important;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+/* User tools */
+.user-actions {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+@media (min-width: 640px) {
+    .user-actions {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+.user-action-card {
+    display: block;
+    background: var(--bg-card);
+    border: 1px solid var(--border-dark);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    color: var(--text);
+    text-decoration: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.user-action-card:hover {
+    border-color: var(--border-blue);
+    box-shadow: 0 0 20px rgba(79, 156, 249, 0.12);
+}
+.user-action-card span {
+    display: block;
+    margin-bottom: 0.35rem;
+    color: var(--blue);
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+.user-action-card small {
+    color: var(--text-muted);
+}
+.user-form {
+    max-width: none;
+}
+.form-grid {
+    display: grid;
+    gap: 1rem;
+}
+@media (min-width: 640px) {
+    .form-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .form-group-wide {
+        grid-column: 1 / -1;
+    }
+}
+.user-search-form {
+    max-width: 560px;
+}
+.user-results {
+    margin-top: 1.5rem;
 }
 
 /* Secure section */

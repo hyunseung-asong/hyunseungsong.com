@@ -8,6 +8,8 @@
                 <a href="<?php echo htmlspecialchars($site_root_prefix); ?>products.php">Services</a>
                 <a href="<?php echo htmlspecialchars($site_root_prefix); ?>news.php">News</a>
                 <a href="<?php echo htmlspecialchars($site_root_prefix); ?>contacts.php">Contacts</a>
+                <a href="<?php echo htmlspecialchars($site_root_prefix); ?>users.php">Users</a>
+                <a href="<?php echo htmlspecialchars($site_root_prefix); ?>all-company-users.php">All companies' users</a>
                 <a href="<?php echo htmlspecialchars($site_root_prefix); ?>secure.php">Secure</a>
             </nav>
         </footer>
