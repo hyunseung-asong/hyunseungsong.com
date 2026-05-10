@@ -9,7 +9,7 @@ $error = null;
 try {
     $top_services = marketplace_fetch_service_stats(5);
 } catch (Throwable $e) {
-    $error = $e->getMessage();
+    $error = 'Marketplace tables are not set up yet. Run sql/marketplace.sql in phpMyAdmin, then reload this page.';
 }
 ?>
 

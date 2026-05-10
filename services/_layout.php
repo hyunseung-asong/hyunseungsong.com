@@ -32,7 +32,7 @@ $review_fields = [
 try {
     marketplace_record_service_visit($service_slug, $marketplace_user_email);
 } catch (Throwable $e) {
-    $visit_error = 'Database visit tracking is not available: ' . $e->getMessage();
+    $visit_error = 'Database visit tracking is not available yet. Run sql/marketplace.sql in phpMyAdmin.';
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['service_review_form'])) {
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['service_review_form']
             $marketplace_user_email = $review_fields['user_email'];
             $review_fields['review_text'] = '';
         } catch (Throwable $e) {
-            $review_errors['database'] = $e->getMessage();
+            $review_errors['database'] = 'Review saving is not available yet. Run sql/marketplace.sql in phpMyAdmin.';
         }
     }
 }
@@ -73,7 +73,7 @@ $reviews_error = null;
 try {
     $reviews = marketplace_fetch_service_reviews($service_slug);
 } catch (Throwable $e) {
-    $reviews_error = 'Could not load reviews: ' . $e->getMessage();
+    $reviews_error = 'Could not load reviews yet. Run sql/marketplace.sql in phpMyAdmin.';
 }
 
 $page_title = $svc['title'];
