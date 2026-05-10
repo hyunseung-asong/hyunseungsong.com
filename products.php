@@ -12,6 +12,7 @@ $catalog = service_catalog();
                 <p>We offer ten focused AI coaching modules—each with its own page, description, and artwork. Pick what matches your climb, then stack modules as you improve.</p>
                 <p class="services-tools">
                     <a class="btn btn-secondary" href="recent-services.php">Last 5 services you viewed</a>
+                    <a class="btn btn-secondary" href="top-services.php">Top 5 services</a>
                 </p>
                 <div class="service-cards">
                     <?php foreach ($catalog as $slug => $svc): ?>

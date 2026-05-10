@@ -5,6 +5,8 @@
 -- 2) After selecting that database in phpMyAdmin, run the table + seed SQL below.
 --    This replaces the older demo users table, so export old rows first if needed.
 
+DROP TABLE IF EXISTS service_reviews;
+DROP TABLE IF EXISTS service_visits;
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
@@ -45,3 +47,31 @@ INSERT INTO users (first_name, last_name, email, home_address, home_phone, cell_
     ('Ivy', 'Thompson', 'ivy.thompson@riftmind.gg', '812 Coach Review Road, Santa Monica, CA 90401', '310-555-0118', '323-555-2118', '2025-08-04', 'Starter'),
     ('Noah', 'Kim', 'noah.kim@riftmind.gg', '93 Blue Buff Drive, Garden Grove, CA 92840', '714-555-0119', '714-555-2119', '2025-08-17', 'Pro'),
     ('Elena', 'Rossi', 'elena.rossi@riftmind.gg', '37 Teamfight Loop, Berkeley, CA 94704', '510-555-0120', '415-555-2120', '2025-09-01', 'Elite');
+
+CREATE TABLE service_visits (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    company_id VARCHAR(16) NOT NULL,
+    service_slug VARCHAR(100) NOT NULL,
+    user_email VARCHAR(255) NULL,
+    visited_at DATETIME NOT NULL,
+    PRIMARY KEY (id),
+    KEY service_visits_service_index (service_slug),
+    KEY service_visits_user_index (user_email),
+    KEY service_visits_company_index (company_id),
+    KEY service_visits_visited_index (visited_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE service_reviews (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    company_id VARCHAR(16) NOT NULL,
+    service_slug VARCHAR(100) NOT NULL,
+    user_email VARCHAR(255) NOT NULL,
+    rating TINYINT UNSIGNED NOT NULL,
+    review_text TEXT NOT NULL,
+    created_at DATETIME NOT NULL,
+    PRIMARY KEY (id),
+    KEY service_reviews_service_index (service_slug),
+    KEY service_reviews_user_index (user_email),
+    KEY service_reviews_company_index (company_id),
+    KEY service_reviews_rating_index (rating)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

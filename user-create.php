@@ -1,6 +1,7 @@
 <?php
 $page_title = 'Create User';
 require_once __DIR__ . '/includes/user_repository.php';
+require_once __DIR__ . '/includes/service_marketplace.php';
 
 $fields = [
     'first_name' => '',
@@ -31,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($errors)) {
         try {
             create_user($fields);
+            marketplace_remember_user_email($fields['email']);
             $created = true;
             foreach ($fields as $key => $value) {
                 $fields[$key] = '';

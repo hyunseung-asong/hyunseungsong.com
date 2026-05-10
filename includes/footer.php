@@ -6,6 +6,7 @@
                 <a href="<?php echo htmlspecialchars($site_root_prefix); ?>index.php">Home</a>
                 <a href="<?php echo htmlspecialchars($site_root_prefix); ?>about.php">About</a>
                 <a href="<?php echo htmlspecialchars($site_root_prefix); ?>products.php">Services</a>
+                <a href="<?php echo htmlspecialchars($site_root_prefix); ?>top-services.php">Top 5</a>
                 <a href="<?php echo htmlspecialchars($site_root_prefix); ?>news.php">News</a>
                 <a href="<?php echo htmlspecialchars($site_root_prefix); ?>contacts.php">Contacts</a>
                 <a href="<?php echo htmlspecialchars($site_root_prefix); ?>users.php">Users</a>
