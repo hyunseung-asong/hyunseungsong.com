@@ -2,6 +2,7 @@
 /**
  * This site's company id (use A, B, C, or D per group role — one letter per deployed site).
  */
+define('COMPANY_ID', 'RIFTMIND');
 if (!defined('COMPANY_ID')) {
     define('COMPANY_ID', 'A');
 }
