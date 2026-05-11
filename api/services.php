@@ -7,19 +7,15 @@ require_once __DIR__ . '/../includes/service_catalog.php';
 $services = [];
 foreach (service_catalog() as $slug => $svc) {
     $services[] = [
-        'company' => COMPANY_ID,
-        'service_slug' => $slug,
         'title' => $svc['title'],
-        'short' => $svc['short'],
-        'href' => $svc['href'],
-        'image' => $svc['image'],
+        'description' => $svc['short'],
+        'price' => $svc['price'],
+        'image_link' => '/' . ltrim($svc['image'], '/'),
+        'product_link' => '/' . ltrim($svc['href'], '/'),
     ];
 }
 
 echo json_encode(
-    [
-        'company' => COMPANY_ID,
-        'services' => $services,
-    ],
-    JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+    $services,
+    JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
 );
