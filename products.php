@@ -22,6 +22,7 @@ $catalog = service_catalog();
                         </a>
                         <div class="service-card-body">
                             <h2><a href="<?php echo htmlspecialchars($svc['href']); ?>"><?php echo htmlspecialchars($svc['title']); ?></a></h2>
+                            <p class="service-card-price">$<?php echo number_format((float) $svc['price'], 2); ?></p>
                             <p><?php echo htmlspecialchars($svc['short']); ?></p>
                             <p><a class="btn btn-primary" href="<?php echo htmlspecialchars($svc['href']); ?>">View details</a></p>
                         </div>

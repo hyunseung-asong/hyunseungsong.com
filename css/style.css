@@ -641,6 +641,11 @@ code {
     margin: 0 0 0.75rem;
     font-size: 0.95rem;
 }
+.service-card-body .service-card-price {
+    color: var(--blue);
+    font-size: 1.05rem;
+    font-weight: 700;
+}
 
 .service-crumb {
     margin: 0 0 0.75rem;
@@ -658,6 +663,12 @@ code {
     font-size: 1.05rem;
     color: var(--text-muted);
     margin-bottom: 1rem;
+}
+.service-detail-price {
+    color: var(--blue);
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: -0.35rem 0 0.75rem;
 }
 .service-figure {
     margin: 0 0 1.25rem;

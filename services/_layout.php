@@ -86,6 +86,7 @@ $h1 = htmlspecialchars($svc['title']);
             <section class="content-section service-detail">
                 <p class="service-crumb"><a href="<?php echo htmlspecialchars($site_root_prefix); ?>products.php">Services</a></p>
                 <h1><?php echo $h1; ?></h1>
+                <p class="service-detail-price">$<?php echo number_format((float) $svc['price'], 2); ?></p>
                 <p class="service-lede"><?php echo htmlspecialchars($body['lede']); ?></p>
                 <figure class="service-figure">
                     <img src="<?php echo $img; ?>" width="960" height="540" alt="<?php echo $h1; ?> illustration">
