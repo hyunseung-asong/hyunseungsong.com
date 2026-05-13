@@ -16,7 +16,7 @@ try {
             <section class="content-section">
                 <p class="service-crumb"><a href="products.php">Services</a></p>
                 <h1>Top 5 Services</h1>
-                <p>Ranked by highest average rating, then most reviews, then most visits.</p>
+                <p>Ranked by total service page visits.</p>
 
                 <?php if ($error !== null): ?>
                 <p class="login-error"><?php echo htmlspecialchars($error); ?></p>
@@ -32,14 +32,6 @@ try {
                             <h2><a href="<?php echo htmlspecialchars($svc['href']); ?>"><?php echo htmlspecialchars($svc['title']); ?></a></h2>
                             <p><?php echo htmlspecialchars($svc['short']); ?></p>
                             <dl class="service-stats">
-                                <div>
-                                    <dt>Average rating</dt>
-                                    <dd><?php echo htmlspecialchars(number_format((float) $svc['avg_rating'], 2)); ?> / 5</dd>
-                                </div>
-                                <div>
-                                    <dt>Reviews</dt>
-                                    <dd><?php echo (int) $svc['review_count']; ?></dd>
-                                </div>
                                 <div>
                                     <dt>Visits</dt>
                                     <dd><?php echo (int) $svc['visit_count']; ?></dd>

@@ -692,40 +692,6 @@ code {
     margin-bottom: 0.35rem;
 }
 
-.service-marketplace-panel {
-    margin: 1.75rem 0;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border-dark);
-}
-.review-form {
-    max-width: none;
-    margin-bottom: 1.5rem;
-}
-.review-list {
-    display: grid;
-    gap: 1rem;
-}
-.review-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-dark);
-    border-radius: var(--radius);
-    padding: 1rem;
-}
-.review-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1rem;
-    align-items: center;
-    margin-bottom: 0.65rem;
-    font-size: 0.9rem;
-    color: var(--text-muted);
-}
-.review-meta strong {
-    color: var(--blue);
-}
-.review-card p {
-    margin: 0;
-}
 .top-services-list {
     display: grid;
     gap: 1rem;
@@ -766,7 +732,7 @@ code {
 .service-stats {
     display: grid;
     gap: 0.75rem;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr);
     margin: 0;
 }
 .service-stats dt {

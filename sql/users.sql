@@ -5,7 +5,6 @@
 -- 2) After selecting that database in phpMyAdmin, run the table + seed SQL below.
 --    This replaces the older demo users table, so export old rows first if needed.
 
-DROP TABLE IF EXISTS service_reviews;
 DROP TABLE IF EXISTS service_visits;
 DROP TABLE IF EXISTS users;
 
@@ -59,19 +58,4 @@ CREATE TABLE service_visits (
     KEY service_visits_user_index (user_email),
     KEY service_visits_company_index (company_id),
     KEY service_visits_visited_index (visited_at)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-CREATE TABLE service_reviews (
-    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    company_id VARCHAR(16) NOT NULL,
-    service_slug VARCHAR(100) NOT NULL,
-    user_email VARCHAR(255) NOT NULL,
-    rating TINYINT UNSIGNED NOT NULL,
-    review_text TEXT NOT NULL,
-    created_at DATETIME NOT NULL,
-    PRIMARY KEY (id),
-    KEY service_reviews_service_index (service_slug),
-    KEY service_reviews_user_index (user_email),
-    KEY service_reviews_company_index (company_id),
-    KEY service_reviews_rating_index (rating)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
